@@ -293,7 +293,7 @@ unset sample_data
 
 [ -z "${grunt_build-1}" ] || (
 cd /opt/superdesk/client
-time node --max-old-space-size=4096 grunt build --webpack-no-progress
+time node --max-old-space-size=4096 `which grunt` build --webpack-no-progress
 )
 
 # Use latest honcho with --no-colour option
