@@ -190,7 +190,7 @@ cd $repo
 if [ ! -d $repo/.git ]; then
     git init
     git remote add origin https://github.com/superdesk/superdesk.git
-    repo_ref=${repo_ref:-'heads/1.0'}
+    repo_ref=${repo_ref:-'heads/publisher-planner-raush'}
     repo_sha=
     git fetch origin $repo_ref:
     git checkout ${repo_sha:-FETCH_HEAD}
@@ -203,7 +203,7 @@ cd /opt/superdesk/server
 time pip install -U -r $req
 
 cd /opt/superdesk/client
-time npm install
+time node --max-old-space-size=4096  `which grunt` build --webpack-no-progress
 
 
 ### deploy
