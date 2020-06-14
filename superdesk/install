@@ -203,7 +203,7 @@ cd /opt/superdesk/server
 time pip install -U -r $req
 
 cd /opt/superdesk/client
-time node --max-old-space-size=4096  `which grunt` build --webpack-no-progress
+time node --max-old-space-size=4096 grunt build --webpack-no-progress
 
 
 ### deploy
