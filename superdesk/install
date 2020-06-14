@@ -189,7 +189,7 @@ repo=${repo:-'/opt/superdesk'}
 cd $repo
 if [ ! -d $repo/.git ]; then
     git init
-    git remote add origin https://github.com/superdesk/superdesk.git
+    git remote add origin https://github.com/FossilBlade/superdesk.git
     repo_ref=${repo_ref:-'heads/publisher-planner-raush'}
     repo_sha=
     git fetch origin $repo_ref:
