@@ -190,7 +190,7 @@ cd $repo
 if [ ! -d $repo/.git ]; then
     git init
     git remote add origin https://github.com/FossilBlade/superdesk.git
-    repo_ref=${repo_ref:-'heads/publisher-planner-raush'}
+    repo_ref=${repo_ref:-'publisher-v2.1'}
     repo_sha=
     git fetch origin $repo_ref:
     git checkout ${repo_sha:-FETCH_HEAD}
@@ -248,6 +248,9 @@ REDIS_URL=${REDIS_URL:-redis://$DB_HOST:6379/1}
 C_FORCE_ROOT=1
 CELERYBEAT_SCHEDULE_FILENAME=${CELERYBEAT_SCHEDULE_FILENAME:-/tmp/celerybeatschedule}
 CELERY_BROKER_URL=${CELERY_BROKER_URL:-$REDIS_URL}
+
+AUTH_SERVER_SHARED_SECRET=${AUTH_SERVER_SHARED_SECRET:-fsafdsfsdafsdfdasf7fasdfdsafdsaf89asfdasdfsdaf}
+AUTHLIB_INSECURE_TRANSPORT=1 ### Remove this if installed over HTTPS
 
 if [ -n "$AMAZON_CONTAINER_NAME" ]; then
     AMAZON_S3_SUBFOLDER=${AMAZON_S3_SUBFOLDER:-'superdesk'}
@@ -307,6 +310,7 @@ wamp: python3 -u ws.py
 work: celery -A worker worker -c 1
 beat: celery -A worker beat --pid=
 capi: gunicorn -b 0.0.0.0:5400 content_api.wsgi $gunicorn_opts
+prodapi: gunicorn -b 0.0.0.0:5500 prod_api.wsgi $gunicorn_opts
 EOF
 
 
@@ -368,6 +372,12 @@ location /api {
 
 location /contentapi {
     proxy_pass http://localhost:5400;
+    proxy_set_header Host $HOST;
+    expires epoch;
+}
+
+location /prodapi {
+    proxy_pass http://localhost:5500;
     proxy_set_header Host $HOST;
     expires epoch;
 }
